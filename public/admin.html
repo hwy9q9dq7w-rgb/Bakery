@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bakkerij - Admin Bestellingen</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <h1>Bakkerij - Admin</h1>
+      <a href="/" class="admin-link">Bestelpagina</a>
+    </div>
+  </header>
+
+  <main class="admin-main">
+    <div class="admin-header">
+      <h2>Bestellingen</h2>
+      <div class="admin-controls">
+        <span id="orderCount">0 bestellingen</span>
+        <button class="refresh-btn" onclick="loadOrders()">Vernieuwen</button>
+      </div>
+    </div>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">Alle</button>
+      <button class="filter-btn" data-filter="Nieuw">Nieuw</button>
+      <button class="filter-btn" data-filter="In behandeling">In behandeling</button>
+      <button class="filter-btn" data-filter="Bezorgd">Bezorgd</button>
+    </div>
+
+    <div class="orders-list" id="ordersList">
+      <p class="loading">Bestellingen laden...</p>
+    </div>
+  </main>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>

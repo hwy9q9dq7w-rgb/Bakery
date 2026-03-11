@@ -1,0 +1,12 @@
+{
+  "name": "bakery-order",
+  "version": "1.0.0",
+  "description": "Bakkerij bestelsysteem voor broodjes",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

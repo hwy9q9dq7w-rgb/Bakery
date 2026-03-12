@@ -9,51 +9,58 @@
 <body>
   <header class="header">
     <div class="header-inner">
-      <h1>Platform Beheer</h1>
+      <div class="header-brand">
+        <div class="header-title" data-i18n="platformTitle">Platform Beheer</div>
+      </div>
       <nav class="header-nav">
-        <a href="/" class="admin-link">Bestelpagina</a>
-        <a href="admin.html" class="admin-link">Bakkerij beheer</a>
+        <div class="lang-switcher">
+          <button class="lang-btn active" data-lang="nl">NL</button>
+          <button class="lang-btn" data-lang="de">DE</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+        <a href="/" class="admin-link" data-i18n="orderPage">Bestelpagina</a>
+        <a href="admin.html" class="admin-link" data-i18n="adminLink">Beheer</a>
       </nav>
     </div>
   </header>
 
   <main class="platform-main">
     <div class="tab-bar">
-      <button class="tab-btn active" data-tab="bakkerijen">Bakkerijen</button>
-      <button class="tab-btn" data-tab="statistieken">Statistieken</button>
-      <button class="tab-btn" data-tab="facturatie">Facturatie</button>
+      <button class="tab-btn active" data-tab="bakkerijen" data-i18n="bakeries">Bakkerijen</button>
+      <button class="tab-btn" data-tab="statistieken" data-i18n="platformStats">Statistieken</button>
+      <button class="tab-btn" data-tab="facturatie" data-i18n="billing">Facturatie</button>
     </div>
 
     <!-- Tab 1: Bakkerijen -->
     <section id="tab-bakkerijen">
       <div class="admin-header">
-        <h2>Bakkerijen</h2>
-        <button class="btn-primary" onclick="openBakeryModal()">+ Bakkerij toevoegen</button>
+        <h2 data-i18n="bakeries">Bakkerijen</h2>
+        <button class="btn-primary" id="addBakeryBtn" data-i18n="addBakery">+ Bakkerij toevoegen</button>
       </div>
       <div class="bakeries-list" id="bakeriesList">
-        <p class="loading">Bakkerijen laden...</p>
+        <p class="loading" data-i18n="loading">Laden...</p>
       </div>
     </section>
 
     <!-- Tab 2: Platform statistieken -->
     <section id="tab-statistieken" style="display:none">
       <div class="admin-header">
-        <h2>Platform Statistieken</h2>
-        <button class="refresh-btn" onclick="loadPlatformStats()">Vernieuwen</button>
+        <h2 data-i18n="platformStats">Platform Statistieken</h2>
+        <button class="refresh-btn" onclick="loadPlatformStats()" data-i18n="refresh">Vernieuwen</button>
       </div>
       <div class="stats-grid" id="platformStatsGrid">
-        <p class="loading">Statistieken laden...</p>
+        <p class="loading" data-i18n="statsLoading">Statistieken laden...</p>
       </div>
-      <h3 style="color:#5a2d0c; margin-bottom:0.75rem; margin-top:1.5rem;">Per bakkerij</h3>
+      <h3 style="color:var(--color-primary-dark); margin-bottom:0.75rem; margin-top:1.5rem;" data-i18n="perBakery">Per bakkerij</h3>
       <div style="overflow-x:auto">
         <table class="bakery-stats-table" id="perBakeryTable">
           <thead>
             <tr>
-              <th>Bakkerij</th>
-              <th>Status</th>
-              <th>Bestellingen</th>
-              <th>Orderomzet</th>
-              <th>Gefactureerd (betaald)</th>
+              <th data-i18n="colBakery">Bakkerij</th>
+              <th data-i18n="colStatus">Status</th>
+              <th data-i18n="colOrders">Bestellingen</th>
+              <th data-i18n="colRevenue">Orderomzet</th>
+              <th data-i18n="colBilled">Gefactureerd (betaald)</th>
             </tr>
           </thead>
           <tbody id="perBakeryBody"></tbody>
@@ -64,25 +71,25 @@
     <!-- Tab 3: Facturatie -->
     <section id="tab-facturatie" style="display:none">
       <div class="admin-header">
-        <h2>Facturen</h2>
-        <button class="btn-primary" onclick="openInvoiceModal()">Factuur aanmaken</button>
+        <h2 data-i18n="invoices">Facturen</h2>
+        <button class="btn-primary" id="createInvoiceBtn" data-i18n="createInvoice">Factuur aanmaken</button>
       </div>
       <div class="invoice-table-wrap">
         <table class="invoice-table" id="invoiceTable">
           <thead>
             <tr>
-              <th>Factuurnummer</th>
-              <th>Bakkerij</th>
-              <th>Periode</th>
-              <th>Subtotaal</th>
-              <th>BTW (21%)</th>
-              <th>Totaal</th>
-              <th>Status</th>
-              <th>Acties</th>
+              <th data-i18n="colInvoiceNr">Factuurnummer</th>
+              <th data-i18n="colBakeryName">Bakkerij</th>
+              <th data-i18n="colPeriod">Periode</th>
+              <th data-i18n="colSubtotal">Subtotaal</th>
+              <th data-i18n="colVat">BTW (21%)</th>
+              <th data-i18n="colTotal">Totaal</th>
+              <th data-i18n="colInvStatus">Status</th>
+              <th data-i18n="colActions">Acties</th>
             </tr>
           </thead>
           <tbody id="invoiceBody">
-            <tr><td colspan="8" class="loading">Facturen laden...</td></tr>
+            <tr><td colspan="8" class="loading" data-i18n="invoicesLoading">Facturen laden...</td></tr>
           </tbody>
         </table>
       </div>
@@ -92,50 +99,50 @@
   <!-- Modal: bakkerij toevoegen/bewerken -->
   <div class="modal-overlay" id="bakeryModal" style="display:none">
     <div class="modal-box">
-      <h3 id="bakeryModalTitle">Bakkerij toevoegen</h3>
+      <h3 id="bakeryModalTitle" data-i18n="addBakeryTitle">Bakkerij toevoegen</h3>
       <input type="hidden" id="bakeryId">
       <label>
-        Naam *
+        <span data-i18n="shopNameLabel">Naam</span> *
         <input type="text" id="bakeryName" placeholder="Bakkerij De Gouden Korst">
       </label>
       <label>
-        Contactpersoon
+        <span data-i18n="contactPerson">Contactpersoon</span>
         <input type="text" id="bakeryContact" placeholder="Jan Janssen">
       </label>
       <label>
-        E-mail
+        <span data-i18n="email">E-mail</span>
         <input type="email" id="bakeryEmail" placeholder="info@bakkerij.nl">
       </label>
       <label>
-        Telefoon
+        <span data-i18n="phoneLbl">Telefoon</span>
         <input type="tel" id="bakeryPhone" placeholder="010-1234567">
       </label>
       <label>
-        Adres
+        <span data-i18n="addressLbl">Adres</span>
         <input type="text" id="bakeryAddress" placeholder="Bakkerstraat 1, Amsterdam">
       </label>
       <label>
-        Abonnement
+        <span data-i18n="subscription">Abonnement</span>
         <select id="bakeryPlan">
-          <option value="maandelijks">Maandelijks</option>
-          <option value="jaarlijks">Jaarlijks</option>
+          <option value="maandelijks" data-i18n="monthly">Maandelijks</option>
+          <option value="jaarlijks" data-i18n="yearly">Jaarlijks</option>
         </select>
       </label>
       <label>
-        Maandelijks abonnementsgeld (€)
+        <span data-i18n="monthlyFee">Maandelijks abonnementsgeld (€)</span>
         <input type="number" id="bakeryMonthlyFee" placeholder="29.95" step="0.01" min="0" value="29.95">
       </label>
       <label>
-        Kosten per bestelling (€)
+        <span data-i18n="perOrderFee">Kosten per bestelling (€)</span>
         <input type="number" id="bakeryPerOrderFee" placeholder="0.10" step="0.01" min="0" value="0.10">
       </label>
       <label>
-        Startdatum abonnement
+        <span data-i18n="startDate">Startdatum abonnement</span>
         <input type="date" id="bakeryStartDate">
       </label>
       <div class="modal-actions">
-        <button class="btn-cancel" onclick="closeBakeryModal()">Annuleren</button>
-        <button class="btn-primary" onclick="saveBakery()">Opslaan</button>
+        <button class="btn-cancel" id="cancelBakeryBtn" data-i18n="cancel">Annuleren</button>
+        <button class="btn-primary" id="saveBakeryBtn" data-i18n="save">Opslaan</button>
       </div>
     </div>
   </div>
@@ -143,32 +150,33 @@
   <!-- Modal: factuur aanmaken -->
   <div class="modal-overlay" id="invoiceModal" style="display:none">
     <div class="modal-box">
-      <h3>Factuur aanmaken</h3>
+      <h3 data-i18n="createInvoice">Factuur aanmaken</h3>
       <label>
-        Bakkerij *
+        <span data-i18n="colBakeryName">Bakkerij</span> *
         <select id="invoiceBakeryId" onchange="updateInvoicePreview()">
-          <option value="">-- Selecteer bakkerij --</option>
+          <option value="" data-i18n="selectBakery">-- Selecteer bakkerij --</option>
         </select>
       </label>
       <label>
-        Periode van *
+        <span data-i18n="periodFrom">Periode van</span> *
         <input type="date" id="invoicePeriodFrom" onchange="updateInvoicePreview()">
       </label>
       <label>
-        Periode tot *
+        <span data-i18n="periodTo">Periode tot</span> *
         <input type="date" id="invoicePeriodTo" onchange="updateInvoicePreview()">
       </label>
       <div class="invoice-preview" id="invoicePreview" style="display:none">
-        <h4>Voorbeeldberekening</h4>
+        <h4 data-i18n="exampleCalc">Voorbeeldberekening</h4>
         <div id="invoicePreviewLines"></div>
       </div>
       <div class="modal-actions">
-        <button class="btn-cancel" onclick="closeInvoiceModal()">Annuleren</button>
-        <button class="btn-primary" onclick="generateInvoice()">Aanmaken</button>
+        <button class="btn-cancel" id="cancelInvoiceBtn" data-i18n="cancel">Annuleren</button>
+        <button class="btn-primary" id="generateInvoiceBtn" data-i18n="createInvoice">Aanmaken</button>
       </div>
     </div>
   </div>
 
+  <script src="js/i18n.js"></script>
   <script src="js/platform.js"></script>
 </body>
 </html>

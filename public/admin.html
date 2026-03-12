@@ -3,98 +3,220 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bakkerij - Beheer</title>
+  <title>Bakkerij — Beheer</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header class="header">
     <div class="header-inner">
-      <h1>Bakkerij - Beheer</h1>
+      <div class="header-brand">
+        <img class="header-logo" id="headerLogo" alt="" style="display:none">
+        <div class="header-title" id="headerTitle" data-i18n="adminTitle">Bakkerij — Beheer</div>
+      </div>
       <nav class="header-nav">
-        <a href="/" class="admin-link">Bestelpagina</a>
-        <a href="platform.html" class="admin-link">Platform</a>
+        <div class="lang-switcher">
+          <button class="lang-btn active" data-lang="nl">NL</button>
+          <button class="lang-btn" data-lang="de">DE</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+        <a href="/" class="admin-link" data-i18n="orderPage">Bestelpagina</a>
+        <a href="platform.html" class="admin-link" data-i18n="platform">Platform</a>
       </nav>
     </div>
   </header>
 
   <main class="admin-main">
     <div class="tab-bar">
-      <button class="tab-btn active" data-tab="bestellingen">Bestellingen</button>
-      <button class="tab-btn" data-tab="menu">Menu beheer</button>
-      <button class="tab-btn" data-tab="statistieken">Statistieken</button>
+      <button class="tab-btn active" data-tab="bestellingen" data-i18n="orders">Bestellingen</button>
+      <button class="tab-btn" data-tab="menu" data-i18n="menuManagement">Menu beheer</button>
+      <button class="tab-btn" data-tab="statistieken" data-i18n="statistics">Statistieken</button>
+      <button class="tab-btn" data-tab="instellingen" data-i18n="settings">Instellingen</button>
     </div>
 
     <!-- Tab 1: Bestellingen -->
     <section id="tab-bestellingen">
       <div class="admin-header">
-        <h2>Bestellingen</h2>
+        <h2 data-i18n="ordersTitle">Bestellingen</h2>
         <div class="admin-controls">
-          <span id="orderCount">0 bestellingen</span>
-          <button class="refresh-btn" onclick="loadOrders()">Vernieuwen</button>
+          <span id="orderCount">0</span>
+          <button class="refresh-btn" onclick="loadOrders()" data-i18n="refresh">Vernieuwen</button>
         </div>
       </div>
 
       <div class="filter-bar">
-        <button class="filter-btn active" data-filter="all">Alle</button>
-        <button class="filter-btn" data-filter="Nieuw">Nieuw</button>
-        <button class="filter-btn" data-filter="In behandeling">In behandeling</button>
-        <button class="filter-btn" data-filter="Bezorgd">Bezorgd</button>
+        <button class="filter-btn active" data-filter="all" data-i18n="filterAll">Alle</button>
+        <button class="filter-btn" data-filter="Nieuw" data-i18n="filterNew">Nieuw</button>
+        <button class="filter-btn" data-filter="In behandeling" data-i18n="filterProcessing">In behandeling</button>
+        <button class="filter-btn" data-filter="Bezorgd" data-i18n="filterDelivered">Bezorgd</button>
       </div>
 
       <div class="orders-list" id="ordersList">
-        <p class="loading">Bestellingen laden...</p>
+        <p class="loading" data-i18n="ordersLoading">Bestellingen laden...</p>
       </div>
     </section>
 
     <!-- Tab 2: Menu beheer -->
     <section id="tab-menu" style="display:none">
       <div class="admin-header">
-        <h2>Menu beheer</h2>
-        <button class="btn-primary" onclick="openMenuModal()">+ Item toevoegen</button>
+        <h2 data-i18n="menuTitle">Menu beheer</h2>
+        <button class="btn-primary" id="addItemBtn" data-i18n="addItem">+ Item toevoegen</button>
       </div>
       <div class="menu-manage-list" id="menuManageList">
-        <p class="loading">Menu laden...</p>
+        <p class="loading" data-i18n="menuLoading2">Menu laden...</p>
       </div>
     </section>
 
     <!-- Tab 3: Statistieken -->
     <section id="tab-statistieken" style="display:none">
       <div class="admin-header">
-        <h2>Statistieken</h2>
-        <button class="refresh-btn" onclick="loadStats()">Vernieuwen</button>
+        <h2 data-i18n="statsTitle">Statistieken</h2>
+        <button class="refresh-btn" onclick="loadStats()" data-i18n="refresh">Vernieuwen</button>
       </div>
       <div class="stats-grid" id="statsGrid">
-        <p class="loading">Statistieken laden...</p>
+        <p class="loading" data-i18n="statsLoading">Statistieken laden...</p>
       </div>
-      <h3 style="color:#5a2d0c; margin-bottom:0.75rem;">Status overzicht</h3>
+      <h3 style="color:var(--color-primary-dark); margin-bottom:0.75rem;" data-i18n="statusOverview">Status overzicht</h3>
       <div class="status-breakdown" id="statusBreakdown"></div>
+    </section>
+
+    <!-- Tab 4: Instellingen -->
+    <section id="tab-instellingen" style="display:none">
+      <div class="admin-header">
+        <h2 data-i18n="settingsTitle">Winkelinstellingen</h2>
+      </div>
+
+      <div class="settings-section">
+        <!-- Linker kolom: formulier -->
+        <div>
+          <!-- Winkelinfo -->
+          <div class="settings-form-wrap" style="margin-bottom:1.5rem">
+            <h3 data-i18n="shopNameLabel">Winkelnaam</h3>
+            <label>
+              <span data-i18n="shopNameLabel">Winkelnaam</span>
+              <input type="text" id="settingsShopName" data-i18n-placeholder="shopNamePlaceholder" placeholder="Bijv. Bakkerij De Gouden Korst">
+            </label>
+            <label>
+              <span data-i18n="taglineLabel">Slogan (optioneel)</span>
+              <input type="text" id="settingsTagline" data-i18n-placeholder="taglinePlaceholder" placeholder="Bijv. Vers gebakken elke dag">
+            </label>
+
+            <!-- Logo -->
+            <label>
+              <span data-i18n="logoLabel">Logo (optioneel)</span>
+              <div class="logo-upload-area" id="logoUploadArea">
+                <input type="file" id="logoFileInput" accept="image/*">
+                <img class="logo-preview-img" id="logoPreviewImg" style="display:none" alt="Logo">
+                <span id="logoUploadText" data-i18n="logoSelect">Logo kiezen</span>
+              </div>
+              <button class="btn-cancel" id="logoRemoveBtn" style="margin-top:0.4rem;display:none" data-i18n="logoRemove">Logo verwijderen</button>
+            </label>
+          </div>
+
+          <!-- Kleuren -->
+          <div class="settings-form-wrap" style="margin-bottom:1.5rem">
+            <h3 data-i18n="primaryColorLabel">Kleuren</h3>
+            <label>
+              <span data-i18n="primaryColorLabel">Hoofdkleur</span>
+              <div class="color-input-row">
+                <input type="color" id="colorPrimary" value="#8b4513">
+                <input type="text" id="colorPrimaryHex" value="#8b4513" maxlength="7">
+              </div>
+            </label>
+            <label>
+              <span data-i18n="secondaryColorLabel">Achtergrondkleur</span>
+              <div class="color-input-row">
+                <input type="color" id="colorSecondary" value="#faf7f2">
+                <input type="text" id="colorSecondaryHex" value="#faf7f2" maxlength="7">
+              </div>
+            </label>
+            <label>
+              <span data-i18n="accentColorLabel">Accentkleur</span>
+              <div class="color-input-row">
+                <input type="color" id="colorAccent" value="#d4a039">
+                <input type="text" id="colorAccentHex" value="#d4a039" maxlength="7">
+              </div>
+            </label>
+            <button class="btn-cancel" id="resetColorsBtn" style="font-size:0.85rem" data-i18n="resetColors">Standaardkleuren</button>
+          </div>
+
+          <!-- Taal -->
+          <div class="settings-form-wrap" style="margin-bottom:1.5rem">
+            <h3 data-i18n="languageLabel">Taal</h3>
+            <label>
+              <span data-i18n="languageLabel">Standaardtaal</span>
+              <select id="settingsLanguage">
+                <option value="nl" data-i18n="langNL">Nederlands</option>
+                <option value="de" data-i18n="langDE">Deutsch</option>
+                <option value="en" data-i18n="langEN">English</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="settings-save-row">
+            <button class="btn-primary" id="saveSettingsBtn" data-i18n="saveSettings">Instellingen opslaan</button>
+            <span class="settings-save-msg" id="settingsSaveMsg" data-i18n="settingsSaved">Instellingen opgeslagen!</span>
+          </div>
+        </div>
+
+        <!-- Rechter kolom: live voorbeeld -->
+        <div>
+          <div class="color-preview-block">
+            <h3 data-i18n="colorPreview">Kleurvoorbeeld</h3>
+            <div class="preview-header-demo" id="previewHeader" style="background:#8b4513">
+              <span class="demo-title" id="previewTitle">Bakkerij</span>
+              <button class="preview-btn-demo" id="previewBtn" style="color:#8b4513">Winkelwagen</button>
+            </div>
+            <div class="preview-card-demo" style="border-top-color:#8b4513; margin-top:0.8rem;">
+              <strong style="color:#5a2d0c">Broodje Kaas</strong>
+              Vers broodje met belegen kaas
+              <div style="display:flex;justify-content:space-between;margin-top:0.6rem;align-items:center">
+                <span style="font-weight:700;" id="previewPrice">€2,50</span>
+                <button style="background:#8b4513;color:white;border:none;padding:0.3rem 0.7rem;border-radius:14px;font-size:0.8rem;cursor:default;" id="previewAddBtn">+ Toevoegen</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 
   <!-- Modal: menu item toevoegen/bewerken -->
   <div class="modal-overlay" id="menuModal" style="display:none">
     <div class="modal-box">
-      <h3 id="menuModalTitle">Menu-item toevoegen</h3>
+      <h3 id="menuModalTitle" data-i18n="addMenuTitle">Menu-item toevoegen</h3>
       <input type="hidden" id="menuItemId">
       <label>
-        Naam *
-        <input type="text" id="menuItemName" placeholder="Bijv. Kaas">
+        <span data-i18n="itemName">Naam</span> *
+        <input type="text" id="menuItemName" data-i18n-placeholder="itemNamePlaceholder" placeholder="Bijv. Kaas">
       </label>
       <label>
-        Omschrijving
-        <input type="text" id="menuItemDesc" placeholder="Bijv. Vers broodje met belegen kaas">
+        <span data-i18n="itemDesc">Omschrijving</span>
+        <input type="text" id="menuItemDesc" data-i18n-placeholder="itemDescPlaceholder" placeholder="Bijv. Vers broodje met belegen kaas">
       </label>
       <label>
-        Prijs (€) *
-        <input type="number" id="menuItemPrice" placeholder="2.50" step="0.01" min="0">
+        <span data-i18n="itemPrice">Prijs (€)</span> *
+        <input type="number" id="menuItemPrice" data-i18n-placeholder="itemPricePlaceholder" placeholder="2.50" step="0.01" min="0">
+      </label>
+      <label>
+        <span data-i18n="itemPhoto">Foto (optioneel)</span>
+        <div class="photo-upload-area" id="photoUploadArea">
+          <input type="file" id="photoFileInput" accept="image/*">
+          <span class="upload-icon">📷</span>
+          <span class="upload-label" data-i18n="itemPhotoSelect">Foto kiezen</span>
+        </div>
+        <div class="photo-preview-wrap" id="photoPreviewWrap" style="display:none">
+          <img id="photoPreviewImg" alt="">
+          <button class="photo-remove-btn" id="photoRemoveBtn" title="Verwijderen">✕</button>
+        </div>
       </label>
       <div class="modal-actions">
-        <button class="btn-cancel" onclick="closeMenuModal()">Annuleren</button>
-        <button class="btn-primary" onclick="saveMenuItem()">Opslaan</button>
+        <button class="btn-cancel" id="cancelMenuBtn" data-i18n="cancel">Annuleren</button>
+        <button class="btn-primary" id="saveMenuBtn" data-i18n="save">Opslaan</button>
       </div>
     </div>
   </div>
 
+  <script src="js/i18n.js"></script>
   <script src="js/admin.js"></script>
 </body>
 </html>

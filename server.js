@@ -8,9 +8,32 @@ const ORDERS_FILE = path.join(__dirname, 'orders.json');
 const BAKERIES_FILE = path.join(__dirname, 'bakeries.json');
 const INVOICES_FILE = path.join(__dirname, 'invoices.json');
 const MENU_FILE = path.join(__dirname, 'menu.json');
+const SETTINGS_FILE = path.join(__dirname, 'settings.json');
 
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+const DEFAULT_SETTINGS = {
+  shopName: 'Bakkerij',
+  tagline: '',
+  logo: null,
+  primaryColor: '#8b4513',
+  secondaryColor: '#faf7f2',
+  accentColor: '#d4a039',
+  language: 'nl',
+};
+
+function readSettings() {
+  if (!fs.existsSync(SETTINGS_FILE)) {
+    fs.writeFileSync(SETTINGS_FILE, JSON.stringify(DEFAULT_SETTINGS, null, 2));
+    return { ...DEFAULT_SETTINGS };
+  }
+  return { ...DEFAULT_SETTINGS, ...JSON.parse(fs.readFileSync(SETTINGS_FILE, 'utf8')) };
+}
+
+function writeSettings(settings) {
+  fs.writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2));
+}
 
 const DEFAULT_MENU = [
   { id: 1, name: 'Kaas', description: 'Vers broodje met belegen kaas', price: 2.50 },
@@ -79,7 +102,7 @@ app.get('/api/menu', (req, res) => {
 });
 
 app.post('/api/menu', (req, res) => {
-  const { name, description, price } = req.body;
+  const { name, description, price, image } = req.body;
   if (!name || !price) {
     return res.status(400).json({ error: 'Naam en prijs zijn verplicht.' });
   }
@@ -89,6 +112,7 @@ app.post('/api/menu', (req, res) => {
     name,
     description: description || '',
     price: Math.round(Number(price) * 100) / 100,
+    image: image || null,
   };
   menu.push(newItem);
   writeMenu(menu);
@@ -97,13 +121,14 @@ app.post('/api/menu', (req, res) => {
 
 app.put('/api/menu/:id', (req, res) => {
   const id = Number(req.params.id);
-  const { name, description, price } = req.body;
+  const { name, description, price, image } = req.body;
   const menu = readMenu();
   const item = menu.find(m => m.id === id);
   if (!item) return res.status(404).json({ error: 'Menu-item niet gevonden.' });
   if (name !== undefined) item.name = name;
   if (description !== undefined) item.description = description;
   if (price !== undefined) item.price = Math.round(Number(price) * 100) / 100;
+  if (image !== undefined) item.image = image;
   writeMenu(menu);
   res.json(item);
 });
@@ -391,6 +416,26 @@ app.put('/api/invoices/:id/status', (req, res) => {
   writeInvoices(invoices);
 
   res.json({ message: 'Facturstatus bijgewerkt.', invoice });
+});
+
+// ── Instellingen ─────────────────────────────────────────────────────────────
+
+app.get('/api/settings', (req, res) => {
+  res.json(readSettings());
+});
+
+app.put('/api/settings', (req, res) => {
+  const current = readSettings();
+  const { shopName, tagline, logo, primaryColor, secondaryColor, accentColor, language } = req.body;
+  if (shopName !== undefined) current.shopName = shopName;
+  if (tagline !== undefined) current.tagline = tagline;
+  if (logo !== undefined) current.logo = logo;
+  if (primaryColor !== undefined) current.primaryColor = primaryColor;
+  if (secondaryColor !== undefined) current.secondaryColor = secondaryColor;
+  if (accentColor !== undefined) current.accentColor = accentColor;
+  if (language !== undefined) current.language = language;
+  writeSettings(current);
+  res.json(current);
 });
 
 app.listen(PORT, () => {

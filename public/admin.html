@@ -3,37 +3,97 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bakkerij - Admin Bestellingen</title>
+  <title>Bakkerij - Beheer</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header class="header">
     <div class="header-inner">
-      <h1>Bakkerij - Admin</h1>
-      <a href="/" class="admin-link">Bestelpagina</a>
+      <h1>Bakkerij - Beheer</h1>
+      <nav class="header-nav">
+        <a href="/" class="admin-link">Bestelpagina</a>
+        <a href="platform.html" class="admin-link">Platform</a>
+      </nav>
     </div>
   </header>
 
   <main class="admin-main">
-    <div class="admin-header">
-      <h2>Bestellingen</h2>
-      <div class="admin-controls">
-        <span id="orderCount">0 bestellingen</span>
-        <button class="refresh-btn" onclick="loadOrders()">Vernieuwen</button>
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="bestellingen">Bestellingen</button>
+      <button class="tab-btn" data-tab="menu">Menu beheer</button>
+      <button class="tab-btn" data-tab="statistieken">Statistieken</button>
+    </div>
+
+    <!-- Tab 1: Bestellingen -->
+    <section id="tab-bestellingen">
+      <div class="admin-header">
+        <h2>Bestellingen</h2>
+        <div class="admin-controls">
+          <span id="orderCount">0 bestellingen</span>
+          <button class="refresh-btn" onclick="loadOrders()">Vernieuwen</button>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all">Alle</button>
+        <button class="filter-btn" data-filter="Nieuw">Nieuw</button>
+        <button class="filter-btn" data-filter="In behandeling">In behandeling</button>
+        <button class="filter-btn" data-filter="Bezorgd">Bezorgd</button>
+      </div>
+
+      <div class="orders-list" id="ordersList">
+        <p class="loading">Bestellingen laden...</p>
+      </div>
+    </section>
+
+    <!-- Tab 2: Menu beheer -->
+    <section id="tab-menu" style="display:none">
+      <div class="admin-header">
+        <h2>Menu beheer</h2>
+        <button class="btn-primary" onclick="openMenuModal()">+ Item toevoegen</button>
+      </div>
+      <div class="menu-manage-list" id="menuManageList">
+        <p class="loading">Menu laden...</p>
+      </div>
+    </section>
+
+    <!-- Tab 3: Statistieken -->
+    <section id="tab-statistieken" style="display:none">
+      <div class="admin-header">
+        <h2>Statistieken</h2>
+        <button class="refresh-btn" onclick="loadStats()">Vernieuwen</button>
+      </div>
+      <div class="stats-grid" id="statsGrid">
+        <p class="loading">Statistieken laden...</p>
+      </div>
+      <h3 style="color:#5a2d0c; margin-bottom:0.75rem;">Status overzicht</h3>
+      <div class="status-breakdown" id="statusBreakdown"></div>
+    </section>
+  </main>
+
+  <!-- Modal: menu item toevoegen/bewerken -->
+  <div class="modal-overlay" id="menuModal" style="display:none">
+    <div class="modal-box">
+      <h3 id="menuModalTitle">Menu-item toevoegen</h3>
+      <input type="hidden" id="menuItemId">
+      <label>
+        Naam *
+        <input type="text" id="menuItemName" placeholder="Bijv. Kaas">
+      </label>
+      <label>
+        Omschrijving
+        <input type="text" id="menuItemDesc" placeholder="Bijv. Vers broodje met belegen kaas">
+      </label>
+      <label>
+        Prijs (€) *
+        <input type="number" id="menuItemPrice" placeholder="2.50" step="0.01" min="0">
+      </label>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeMenuModal()">Annuleren</button>
+        <button class="btn-primary" onclick="saveMenuItem()">Opslaan</button>
       </div>
     </div>
-
-    <div class="filter-bar">
-      <button class="filter-btn active" data-filter="all">Alle</button>
-      <button class="filter-btn" data-filter="Nieuw">Nieuw</button>
-      <button class="filter-btn" data-filter="In behandeling">In behandeling</button>
-      <button class="filter-btn" data-filter="Bezorgd">Bezorgd</button>
-    </div>
-
-    <div class="orders-list" id="ordersList">
-      <p class="loading">Bestellingen laden...</p>
-    </div>
-  </main>
+  </div>
 
   <script src="js/admin.js"></script>
 </body>

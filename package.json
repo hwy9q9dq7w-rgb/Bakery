@@ -7,6 +7,8 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "@netlify/blobs": "^10.7.1",
+    "express": "^4.18.2",
+    "serverless-http": "^4.0.0"
   }
 }
